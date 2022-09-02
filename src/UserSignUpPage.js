@@ -18,14 +18,18 @@ this.setState({
 }
 
 onClick=event=>{
+    
+    event.preventDefault();
+    
+    const {id,name,password}=this.state
+
     const body={
-        id:this.state.id,
-        name:this.state.name,
-        password:this.state.password
+        id,
+        name,
+        password
 
     }
-    event.preventDefault()
-    axios.post("http://localhost:8080/api/1.0/users",body)
+    axios.post('/api/1.0/users',body)
 }
 
 
