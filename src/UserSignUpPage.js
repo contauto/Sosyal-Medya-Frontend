@@ -1,67 +1,85 @@
-import React, { Component } from 'react'
-import axios from 'axios';
+import React, { Component } from "react";
+import axios from "axios";
 
 export default class UserSignUpPage extends Component {
+  state = {
+    username: null,
+    name: null,
+    password: null,
+    rePassword: null,
+  };
 
-    state={
-        id:null,
-        name:null,
-        password:null,
-        rePassword:null
-    };
+  onChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value,
+    });
+  };
 
-onChange=event=>{
-    const {name,value}=event.target
-this.setState({
-    [name]:value
-})
-}
-
-onClick=event=>{
-    
+  onClick = (event) => {
     event.preventDefault();
-    
-    const {id,name,password}=this.state
 
-    const body={
-        id,
-        name,
-        password
+    const { username, name, password } = this.state;
 
-    }
-    axios.post('/api/1.0/users',body)
-}
-
-
+    const body = {
+      username,
+      name,
+      password,
+    };
+    axios.post("/api/1.0/users", body);
+  };
 
   render() {
     return (
+      <div className="container">
         <form>
-            <h1>Sign Up</h1>
+          <h1 className="text-center">Sign Up</h1>
 
-            <div>
-            <label>ID</label>
-            <input name='id' onChange={this.onChange}/>
-            </div>
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              className="form-control"
+              name="username"
+              onChange={this.onChange}
+            />
+          </div>
 
-            <div>
+          <div className="form-group">
             <label>Name</label>
-            <input name='name' onChange={this.onChange}/>
-            </div>
+            <input
+              className="form-control"
+              name="name"
+              onChange={this.onChange}
+            />
+          </div>
 
-            <div>
+          <div className="form-group">
             <label>Password</label>
-            <input name='password' onChange={this.onChange} type="password"/>
-            </div>
+            <input
+              className="form-control"
+              name="password"
+              onChange={this.onChange}
+              type="password"
+            />
+          </div>
 
-            <div>
+          <div className="form-group">
             <label>Re-Password</label>
-            <input name='rePassword' onChange={this.onChange} type="password"/>
-            </div>
+            <input
+              className="form-control"
+              name="rePassword"
+              onChange={this.onChange}
+              type="password"
+            />
+          </div>
 
-            <button onClick={this.onClick}>Sign Up</button>
-
+          <div className="text-center">
+            <button className="btn btn-primary mt-2" onClick={this.onClick}>
+              Sign Up
+            </button>
+          </div>
         </form>
+      </div>
     );
   }
 }
