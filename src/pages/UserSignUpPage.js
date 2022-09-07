@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { signUp } from "../api/ApiCalls";
+import "../css/UserSignUpPage.css"
 
 export default class UserSignUpPage extends Component {
   state = {
@@ -46,9 +47,9 @@ export default class UserSignUpPage extends Component {
     return (
       <div className="container">
         <form>
-          <h1 className="text-center">Sign Up</h1>
+          <h1 className="text-center mt-5 purp">Sign Up</h1>
 
-          <div className="form-group">
+          <div className="form-group mt-2">
             <label>Username</label>
             <input
               className="form-control"
@@ -57,7 +58,7 @@ export default class UserSignUpPage extends Component {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group mt-2">
             <label>Name</label>
             <input
               className="form-control"
@@ -66,7 +67,7 @@ export default class UserSignUpPage extends Component {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group mt-2">
             <label>Password</label>
             <input
               className="form-control"
@@ -76,7 +77,7 @@ export default class UserSignUpPage extends Component {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group mt-2">
             <label>Re-Password</label>
             <input
               className="form-control"
@@ -86,7 +87,7 @@ export default class UserSignUpPage extends Component {
             />
           </div>
 
-          <div className="text-center">
+          <div className="text-center form-group mt-2">
             <button
               disabled={pendingRequest}
               className="btn btn-primary mt-2"
