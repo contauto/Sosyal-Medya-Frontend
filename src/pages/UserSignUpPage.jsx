@@ -18,6 +18,16 @@ export default class UserSignUpPage extends Component {
     const { name, value } = event.target;
     const errors = { ...this.state.errors };
     errors[name] = undefined;
+    if(name==='password' || name=== 'rePassword'){
+      if(name==='password' && value !==this.state.rePassword ){
+        errors.rePassword="password mismatch"
+      }
+      else if(name==="rePassword" && value !==this.state.password ){
+        errors.rePassword="password mismatch"
+    }
+    else{
+      errors.rePassword=undefined
+    }}
     this.setState({
       [name]: value,
       errors,
@@ -60,11 +70,11 @@ export default class UserSignUpPage extends Component {
           <h1 className="text-center mt-5 purp">Sign Up</h1>
           <Input name="username" onChange={this.onChange} label="Username" error={username}/>
           <Input name="name" onChange={this.onChange} label="Name" error={name}/>
-          <Input name="password" onChange={this.onChange} label="Password" error={password}/>
-          <Input name="rePassword" onChange={this.onChange} label="Re-Password" error={rePassword}/>
+          <Input name="password" onChange={this.onChange} label="Password" error={password} type="password"/>
+          <Input name="rePassword" onChange={this.onChange} label="Re-Password" error={rePassword} type="password"/>
           <div className="text-center form-group mt-2">
             <button
-              disabled={pendingRequest}
+              disabled={pendingRequest || rePassword!==undefined}
               className="btn btn-primary mt-2"
               onClick={this.onClick}
             >
