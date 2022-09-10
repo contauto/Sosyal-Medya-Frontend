@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
-import { signUp } from "../api/ApiCalls";
+import { changeLanguage, signUp } from "../api/ApiCalls";
 import "../css/UserSignUpPage.css";
 import Input from "../components/Input";
+import { withTranslation } from "react-i18next";
 
-export default class UserSignUpPage extends Component {
+ class UserSignUpPage extends Component {
+  
   state = {
     username: null,
     name: null,
@@ -15,15 +17,16 @@ export default class UserSignUpPage extends Component {
   };
 
   onChange = (event) => {
+    const{t}=this.props
     const { name, value } = event.target;
     const errors = { ...this.state.errors };
     errors[name] = undefined;
     if(name==='password' || name=== 'rePassword'){
       if(name==='password' && value !==this.state.rePassword ){
-        errors.rePassword="password mismatch"
+        errors.rePassword=t("Password mismatch")
       }
       else if(name==="rePassword" && value !==this.state.password ){
-        errors.rePassword="password mismatch"
+        errors.rePassword=t("Password mismatch")
     }
     else{
       errors.rePassword=undefined
@@ -61,17 +64,24 @@ export default class UserSignUpPage extends Component {
     });
   };
 
+  onChangeLanguage=language=>{
+    const {i18n}=this.props
+    i18n.changeLanguage(language)
+    changeLanguage(language)
+  }
+
   render() {
     const { pendingRequest, errors } = this.state;
     const { username,name,password,rePassword } = errors;
+    const{t}=this.props
     return (
       <div className="container">
         <form>
-          <h1 className="text-center mt-5 purp">Sign Up</h1>
-          <Input name="username" onChange={this.onChange} label="Username" error={username}/>
-          <Input name="name" onChange={this.onChange} label="Name" error={name}/>
-          <Input name="password" onChange={this.onChange} label="Password" error={password} type="password"/>
-          <Input name="rePassword" onChange={this.onChange} label="Re-Password" error={rePassword} type="password"/>
+          <h1 className="text-center mt-5 purp">{t("Sign Up")}</h1>
+          <Input name="username" onChange={this.onChange} label={t("Username")} error={username}/>
+          <Input name="name" onChange={this.onChange} label={t("Name")} error={name}/>
+          <Input name="password" onChange={this.onChange} label={t("Password")} error={password} type="password"/>
+          <Input name="rePassword" onChange={this.onChange} label={t("Re-Password")} error={rePassword} type="password"/>
           <div className="text-center form-group mt-2">
             <button
               disabled={pendingRequest || rePassword!==undefined}
@@ -81,11 +91,19 @@ export default class UserSignUpPage extends Component {
               {pendingRequest && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
-              Sign Up
+              {t("Sign Up")}
             </button>
+          </div>
+          <div>
+          <img alt="us" src="https://flagcdn.com/h20/us.png" onClick={()=>this.onChangeLanguage("en")} style={{cursor:"pointer"}}></img>
+          <img  alt="tr" src="https://flagcdn.com/h20/tr.png" onClick={()=>this.onChangeLanguage("tr")} style={{cursor:"pointer"}}></img>
           </div>
         </form>
       </div>
     );
   }
 }
+
+
+const UserSignUpPageWithTranslation=withTranslation()(UserSignUpPage)
+export default UserSignUpPageWithTranslation
