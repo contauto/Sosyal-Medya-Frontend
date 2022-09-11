@@ -2,15 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import UserSignUpPage from './pages/UserSignUpPage';
+import LoginPage from './pages/LoginPage';
 import './bootstrap-override.scss'
 import './i18n';
+import LanguageSelector from './api/LanguageSelector';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <div>
-    <UserSignUpPage />
+    <LoginPage />
+    <LanguageSelector/>
     </div>
     
   </React.StrictMode>

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from "react";
-import { changeLanguage, signUp } from "../api/ApiCalls";
+import {signUp } from "../api/ApiCalls";
 import "../css/UserSignUpPage.css";
 import Input from "../components/Input";
 import { withTranslation } from "react-i18next";
@@ -64,11 +64,7 @@ import { withTranslation } from "react-i18next";
     });
   };
 
-  onChangeLanguage=language=>{
-    const {i18n}=this.props
-    i18n.changeLanguage(language)
-    changeLanguage(language)
-  }
+
 
   render() {
     const { pendingRequest, errors } = this.state;
@@ -93,10 +89,6 @@ import { withTranslation } from "react-i18next";
               )}
               {t("Sign Up")}
             </button>
-          </div>
-          <div>
-          <img alt="us" src="https://flagcdn.com/h20/us.png" onClick={()=>this.onChangeLanguage("en")} style={{cursor:"pointer"}}></img>
-          <img  alt="tr" src="https://flagcdn.com/h20/tr.png" onClick={()=>this.onChangeLanguage("tr")} style={{cursor:"pointer"}}></img>
           </div>
         </form>
       </div>
