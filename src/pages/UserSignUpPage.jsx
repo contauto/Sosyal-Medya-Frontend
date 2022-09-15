@@ -4,6 +4,7 @@ import {signUp } from "../api/ApiCalls";
 import "../css/UserSignUpPage.css";
 import Input from "../components/Input";
 import { withTranslation } from "react-i18next";
+import ButtonWithProgress from "../components/ButtonWithProgress";
 
  class UserSignUpPage extends Component {
   
@@ -79,16 +80,13 @@ import { withTranslation } from "react-i18next";
           <Input name="password" onChange={this.onChange} label={t("Password")} error={password} type="password"/>
           <Input name="rePassword" onChange={this.onChange} label={t("Re-Password")} error={rePassword} type="password"/>
           <div className="text-center form-group mt-2">
-            <button
-              disabled={pendingRequest || rePassword!==undefined}
-              className="btn btn-primary mt-2"
+            <ButtonWithProgress 
+              disabled={pendingRequest || rePassword!==undefined }
               onClick={this.onClick}
-            >
-              {pendingRequest && (
+              pendingApiCall={pendingRequest && (
                 <span className="spinner-border spinner-border-sm"></span>
               )}
-              {t("Sign Up")}
-            </button>
+              text={t("Sign Up")}/>
           </div>
         </form>
       </div>
