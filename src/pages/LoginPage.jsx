@@ -5,6 +5,8 @@ import { withTranslation } from "react-i18next";
 import { login } from "../api/ApiCalls";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { withApiProgress } from "../shared/ApiProgress";
+import { withRouter } from "../shared/withRouter";
+
 
 class LoginPage extends Component {
   state = {
@@ -33,6 +35,7 @@ class LoginPage extends Component {
     });
     try {
       await login(creds);
+      this.props.navigate('/')
     } catch (apiError) {
       this.setState({ error: apiError.response.data.message });
     }
@@ -74,4 +77,5 @@ class LoginPage extends Component {
 }
 
 const LoginPageWithTranslation = withTranslation()(LoginPage);
-export default withApiProgress(LoginPageWithTranslation, "/api/1.0/auth");
+const LoginPageWithApiProgress=withApiProgress(LoginPageWithTranslation, "/api/1.0/auth");
+export default withRouter(LoginPageWithApiProgress)

@@ -1,17 +1,25 @@
-import React from 'react';
-import UserSignUpPage from '../pages/UserSignUpPage';
-import LoginPage from '../pages/LoginPage';
-import LanguageSelector from '../components/LanguageSelector';
+import React from "react";
+import UserSignUpPage from "../pages/UserSignUpPage";
+import LoginPage from "../pages/LoginPage";
+import HomePage from "../pages/HomePage";
+import UserPage from "../pages/UserPage";
+import Navbar from "../components/Navbar";
+import LanguageSelector from "../components/LanguageSelector";
+import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
 
 function App() {
   return (
-    <div className="row">
-      <div className="col">
-        <UserSignUpPage />
-      </div>
-      <div className="col">
-        <LoginPage />
-      </div>
+    <div>
+      <HashRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<UserSignUpPage />} />
+          <Route path="/user/:username" element={<UserPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </HashRouter>
       <LanguageSelector />
     </div>
   );

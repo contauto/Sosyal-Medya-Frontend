@@ -4,19 +4,9 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import "./bootstrap-override.scss";
 import "./i18n";
-import App from "./container/App"
-
+import App from "./container/App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <div>
-      <App></App>
-    </div>
-  </React.StrictMode>
-);
+root.render(<App></App>);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
