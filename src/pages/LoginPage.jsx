@@ -6,7 +6,8 @@ import { login } from "../api/ApiCalls";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { withApiProgress } from "../shared/ApiProgress";
 import { withRouter } from "../shared/withRouter";
-
+import { connect } from "react-redux";
+import { loginSuccess } from "../redux/authActions";
 
 class LoginPage extends Component {
   state = {
@@ -24,8 +25,8 @@ class LoginPage extends Component {
   };
 
   onClickLogin = async (event) => {
-    const { username, password } = this.state;
     event.preventDefault();
+    const { username, password } = this.state;
     const creds = {
       username,
       password,
@@ -34,8 +35,13 @@ class LoginPage extends Component {
       error: null,
     });
     try {
-      await login(creds);
-      this.props.navigate('/')
+      const response = await login(creds);
+      this.props.navigate("/");
+      const authState = {
+        ...response.data,
+        password,
+      }
+      this.props.onLoginSuccess(authState);
     } catch (apiError) {
       this.setState({ error: apiError.response.data.message });
     }
@@ -75,7 +81,20 @@ class LoginPage extends Component {
     );
   }
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLoginSuccess: (authState) => {
+     return dispatch(loginSuccess(authState));
+    },
+  };
+};
 
 const LoginPageWithTranslation = withTranslation()(LoginPage);
-const LoginPageWithApiProgress=withApiProgress(LoginPageWithTranslation, "/api/1.0/auth");
-export default withRouter(LoginPageWithApiProgress)
+const LoginPageWithApiProgress = withApiProgress(
+  LoginPageWithTranslation,
+  "/api/1.0/auth"
+);
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(LoginPageWithApiProgress));

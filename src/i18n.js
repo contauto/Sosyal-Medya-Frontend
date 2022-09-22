@@ -11,7 +11,8 @@ i18n.use(initReactI18next).init({
         'Name': 'Name',
         Password: 'Password',
         'Re-Password': 'Re-Password',
-        "Login":"Login"
+        "Login":"Login",
+        "Logout":"Logout"
       }
     },
     tr: {
@@ -22,7 +23,8 @@ i18n.use(initReactI18next).init({
         'Name': 'İsim',
         Password: 'Şifre',
         'Re-Password': 'Şifreyi Tekrarla',
-        "Login":"Giriş Yap"
+        "Login":"Giriş Yap",
+        "Logout":"Çıkış Yap"
       }
     }
   },

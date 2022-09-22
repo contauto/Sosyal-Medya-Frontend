@@ -7,14 +7,16 @@ import Navbar from "../components/Navbar";
 import LanguageSelector from "../components/LanguageSelector";
 import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
 
-function App() {
+class App extends React.Component {
+  render() {
+    const isLoggedIn = false;
   return (
     <div>
       <HashRouter>
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          {!isLoggedIn && <Route path="/login" element={<LoginPage />} />}
           <Route path="/signup" element={<UserSignUpPage />} />
           <Route path="/user/:username" element={<UserPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -24,5 +26,5 @@ function App() {
     </div>
   );
 }
-
+}
 export default App;
