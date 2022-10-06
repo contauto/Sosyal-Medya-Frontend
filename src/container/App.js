@@ -6,10 +6,11 @@ import UserPage from "../pages/UserPage";
 import Navbar from "../components/Navbar";
 import LanguageSelector from "../components/LanguageSelector";
 import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
+import { connect } from "react-redux";
 
 class App extends React.Component {
   render() {
-    const isLoggedIn = false;
+    const {isLoggedIn} = this.props;
   return (
     <div>
       <HashRouter>
@@ -27,4 +28,13 @@ class App extends React.Component {
   );
 }
 }
-export default App;
+
+const mapStateToProps=store=>{
+  return{
+    isLoggedIn:store.isLoggedIn
+  }
+}
+
+
+
+export default connect(mapStateToProps)(App);

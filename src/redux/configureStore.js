@@ -1,18 +1,43 @@
-
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
+import thunk from "redux-thunk";
+import SecureLS from "secure-ls";
 import authReducer from "./authReducer";
 
+const secureLS=new SecureLS();
 
-const loggedInState = {
-    isLoggedIn: true,
-    username: "user1",
-    name: "name1",
-    image: null,
-    password: "P4ssword",
+let getStateFromStorage=()=>{
+  const sosioAuth = secureLS.get("sosio-auth");
+  let stateInLocalStorage = {
+    isLoggedIn: false,
+    username: undefined,
+    name: undefined,
+    image: undefined,
+    password: undefined,
   };
+  if (sosioAuth) {
+  return sosioAuth
+}
+return stateInLocalStorage}
 
-  const configureStore=()=>{
-    return createStore(authReducer, loggedInState,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
-  }
+const updateStateInStorage=(newState)=>{
+  secureLS.set("sosio-auth",newState);
+}
 
-  export default configureStore
+
+
+const configureStore = () => {
+  
+  const store = createStore(
+    authReducer,
+    getStateFromStorage(),
+    applyMiddleware(thunk)
+  );
+
+  store.subscribe(() => {
+    updateStateInStorage(store.getState())
+  });
+
+  return store;
+};
+
+export default configureStore;
