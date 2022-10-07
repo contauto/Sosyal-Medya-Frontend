@@ -3,15 +3,17 @@ import Input from "../components/Input";
 import { useTranslation } from "react-i18next";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { useApiProgress } from "../shared/ApiProgress";
-import { withRouter } from "../shared/withRouter";
 import { useDispatch } from "react-redux";
 import { loginHandler } from "../redux/authActions.js";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 const LoginPage = (props) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     setError(undefined);
   }, [username, password]);
@@ -25,7 +27,7 @@ const LoginPage = (props) => {
     };
     try {
       await dispatch(loginHandler(creds));
-      this.props.navigate("/");
+      navigate("/");
     } catch (apiError) {
       setError(apiError.response.data.message);
     }
@@ -34,6 +36,7 @@ const LoginPage = (props) => {
   const { t } = useTranslation();
   const pendingApiCall = useApiProgress("/api/1.0/auth");
   const buttonDisabled = !(username && password);
+
   return (
     <div className="container">
       <form>
@@ -61,4 +64,4 @@ const LoginPage = (props) => {
     </div>
   );
 };
-export default withRouter(LoginPage);
+export default LoginPage;

@@ -5,8 +5,8 @@ import ButtonWithProgress from "../components/ButtonWithProgress";
 import { useApiProgress} from "../shared/ApiProgress";
 import { useDispatch } from "react-redux";
 import { signUpHandler } from "../redux/authActions";
-import { withRouter } from "../shared/withRouter";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserSignUpPage = (props) => {
   const [form, setForm] = useState({
@@ -17,7 +17,7 @@ const UserSignUpPage = (props) => {
   });
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-
+  const navigate=useNavigate()
   const onChange = (event) => {
     const { name, value } = event.target;
     setErrors((previousErrors) => ({ ...previousErrors, [name]: undefined }));
@@ -35,7 +35,7 @@ const UserSignUpPage = (props) => {
     };
     try {
       await dispatch(signUpHandler(body));
-      props.navigate("/");
+      navigate("/");
     } catch (error) {
       if (error.response.data.validationErrors) {
         setErrors(error.response.data.validationErrors);
@@ -101,4 +101,4 @@ const UserSignUpPage = (props) => {
 };
 
 
-export default withRouter(UserSignUpPage);
+export default UserSignUpPage;
