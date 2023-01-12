@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { getUsers } from '../api/ApiCalls'
 import { withTranslation } from 'react-i18next'
+import UserListItem from './UserListItem'
 
 
  class UserList extends Component {
@@ -11,7 +12,7 @@ import { withTranslation } from 'react-i18next'
     componentDidMount(){
     getUsers().then(response=>{
         this.setState({
-            users:response.data
+            users:response.data.content
         })
     })
     }
@@ -24,9 +25,9 @@ import { withTranslation } from 'react-i18next'
         <h3 className='card-header text-center'>{t("Users")}</h3>
         <div className='list-group-flush'>
         {users.map(user=>(
-            <div className='list-group-item list-group-item-action' key={user.username}>
+            <UserListItem key={user.username} user={user}>
                     {user.username}
-            </div>
+            </UserListItem>
         ))}
       </div>
         </div>
