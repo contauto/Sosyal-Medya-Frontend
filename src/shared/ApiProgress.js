@@ -39,7 +39,8 @@ export const useApiProgress = (apiPath) => {
     return function unMount(){
       unRegisterInterceptors()
     }
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
   return pendingApiCall;
 };
 

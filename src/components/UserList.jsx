@@ -1,42 +1,42 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { getUsers } from "../api/ApiCalls";
-import { withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import UserListItem from "./UserListItem";
 
-class UserList extends Component {
-  state = {
-    page: {
+const UserList =()=>  {
+  const [page,setPage]=useState({
       content: [],
       size: 3,
       number: 0,
-    },
-  };
+    
+  })
 
-  loadUsers = (page) => {
+  useEffect(() => {
+    loadUsers()
+  }, [])
+  
+
+
+ const loadUsers = (page) => {
     getUsers(page).then((response) => {
-      this.setState({
-        page: response.data,
-      });
-    });
-  };
-
-  componentDidMount() {
-    this.loadUsers();
+        setPage(response.data)
+ })
   }
 
-  onClickNext=()=>{
-  const nextPage=this.state.page.number+1
-  this.loadUsers(nextPage)
+
+  const onClickNext=()=>{
+  const nextPage=page.number+1
+  loadUsers(nextPage)
   }
 
-  onClickPrevious=()=>{
-    const previousPage=this.state.page.number-1
-    this.loadUsers(previousPage)
+  const onClickPrevious=()=>{
+    const previousPage=page.number-1
+    loadUsers(previousPage)
   }
 
-  render() {
-    const { content: users, last, first } = this.state.page;
-    const { t } = this.props;
+  
+    const { content: users, last, first } = page;
+    const { t } = useTranslation();
     return (
       <div className="card">
         <h3 className="card-header text-center">{t("Users")}</h3>
@@ -49,10 +49,10 @@ class UserList extends Component {
         </div>
         <div>
           {first === false && (
-            <button onClick={this.onClickPrevious} className="btn btn-sm btn-light">{t("Previous")}</button>
+            <button onClick={onClickPrevious} className="btn btn-sm btn-light">{t("Previous")}</button>
           )}
           {last === false && (
-            <button onClick={this.onClickNext} className="btn btn-sm btn-light float-end">
+            <button onClick={onClickNext} className="btn btn-sm btn-light float-end">
               {t("Next")}
             </button>
           )}
@@ -60,6 +60,6 @@ class UserList extends Component {
       </div>
     );
   }
-}
 
-export default withTranslation()(UserList);
+
+export default UserList;
