@@ -2,6 +2,7 @@ import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import SecureLS from "secure-ls";
 import authReducer from "./authReducer";
+import { setAuthorizationHeader } from "../api/ApiCalls";
 
 const secureLS=new SecureLS();
 
@@ -26,15 +27,17 @@ const updateStateInStorage=(newState)=>{
 
 
 const configureStore = () => {
-  
+  const initialState=getStateFromStorage()
+  setAuthorizationHeader(initialState)
   const store = createStore(
     authReducer,
-    getStateFromStorage(),
+    initialState,
     applyMiddleware(thunk)
   );
 
   store.subscribe(() => {
     updateStateInStorage(store.getState())
+    setAuthorizationHeader(store.getState())
   });
 
   return store;
