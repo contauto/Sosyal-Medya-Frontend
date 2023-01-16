@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-
+import Spinner from "../components/Spinner"
 import ProfileCard from "../components/ProfileCard";
 import { useParams } from "react-router-dom";
 import { getUser } from "../api/ApiCalls";
 import { useTranslation } from "react-i18next";
+import { useApiProgress } from "../shared/ApiProgress";
 
 const UserPage = (props) => {
-  const [user, setUser] = useState();
+
+  const [user, setUser] = useState({});
   const {username} = useParams();
   const [error,setError]=useState(false)
-
+  const pendingApiCall=useApiProgress("/api/1.0/users/"+username)
+  
   useEffect(() => {
     setError(false)
   }, [user])
@@ -28,6 +31,10 @@ const UserPage = (props) => {
   }, [username]);
 
 const {t}=useTranslation()
+
+if(pendingApiCall){
+  return <Spinner/>
+}
 
 if(error){
 return(
@@ -48,7 +55,7 @@ return(
 
   return (
     <div className="container">
-      <ProfileCard />
+      <ProfileCard user={user} />
     </div>
   );
 };
