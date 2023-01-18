@@ -11,7 +11,7 @@ const UserPage = (props) => {
   const [user, setUser] = useState({});
   const {username} = useParams();
   const [error,setError]=useState(false)
-  const pendingApiCall=useApiProgress("/api/1.0/users/"+username)
+  const pendingApiCall=useApiProgress("get","/api/1.0/users/"+username)
   
   useEffect(() => {
     setError(false)
