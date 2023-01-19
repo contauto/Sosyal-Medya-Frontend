@@ -7,7 +7,7 @@ export default function ProfileImageWithDefault(props) {
     const {image}=props
 
     if (image) {
-      imageSource = image;
+      imageSource = "images/"+image;
     }
 
   return (

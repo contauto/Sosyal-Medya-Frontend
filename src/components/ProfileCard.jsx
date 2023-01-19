@@ -19,6 +19,7 @@ const ProfileCard = (props) => {
     username: store.username,
   }));
   const [editable,setEditable] = useState(false)
+  const [newImage,setNewImage]=useState()
 
   useEffect(() => {
     setUser(props.user);
@@ -29,8 +30,18 @@ useEffect(()=>{
 },[pathUsername,loggedInUsername])
 
   const onClickSave = async () => {
+    let image;
+    let propsName=name
+    if(updatedName){
+      propsName=updatedName
+    }
+    if(newImage){
+      image=newImage.split(",")[1]
+    }
+
     const body = {
-      name: updatedName,
+      name: propsName,
+      image
     };
     try {
       const response = await updateUser(username, body);
@@ -40,6 +51,19 @@ useEffect(()=>{
   };
 
   const pendingApiCall = useApiProgress("put", "/api/1.0/users/" + username);
+
+  const onChangeFile=(event)=>{
+    if(event.target.files[0])
+    {const file=event.target.files[0]
+    const fileReader=new FileReader()
+    fileReader.onloadend=()=>{
+      setNewImage(fileReader.result)
+    }
+    fileReader.readAsDataURL(file)}
+    else{
+      setNewImage(undefined)
+    }
+  }
 
   return (
     <div className="card text-center">
@@ -78,6 +102,12 @@ useEffect(()=>{
               defaultValue={name}
               label={t("Change Name")}
             ></Input>
+
+      <div className="input-group mb-3 mt-3">
+      <label className="input-group-text" htmlFor="inputGroupFile01">Upload A Picture</label>
+      <input onChange={onChangeFile} type="file" className="form-control" id="inputGroupFile01"/>
+      </div>
+
             <div className="mt-3">
               <ButtonWithProgress
                 onClick={onClickSave}
@@ -97,6 +127,7 @@ useEffect(()=>{
                 onClick={() => {
                   setEditMode(false);
                   setUpdatedName(name);
+                  setNewImage(undefined);
                 }}
               >
                 <i className="material-icons">close</i>
