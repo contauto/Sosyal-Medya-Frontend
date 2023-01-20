@@ -8,9 +8,6 @@ import App from "./container/App";
 import configureStore from "./redux/configureStore";
 import { Provider } from "react-redux";
 
-
-
-
 const store = configureStore()
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
