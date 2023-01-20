@@ -30,3 +30,11 @@ return async function(dispatch){
   return response
 }
 }
+
+export const updateSuccess=({name,image})=>{
+  return {
+    type:ACTIONS.UPDATE_SUCCESS,
+    payload:{name,
+    image}
+  }
+}

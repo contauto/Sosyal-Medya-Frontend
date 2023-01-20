@@ -6,7 +6,8 @@ import { updateUser } from "../api/ApiCalls";
 import { useApiProgress } from "../shared/ApiProgress";
 import ButtonWithProgress from "./ButtonWithProgress";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSuccess } from "../redux/authActions";
 
 const ProfileCard = (props) => {
   const [editMode, setEditMode] = useState(false);
@@ -20,6 +21,9 @@ const ProfileCard = (props) => {
   }));
   const [editable,setEditable] = useState(false)
   const [newImage,setNewImage]=useState()
+  const [validationErrors,setValidationErrors]=useState({})
+  const dispatch=useDispatch()
+  
 
   useEffect(() => {
     setUser(props.user);
@@ -47,7 +51,10 @@ useEffect(()=>{
       const response = await updateUser(username, body);
       setEditMode(false);
       setUser(response.data);
-    } catch (error) {}
+      dispatch(updateSuccess(response.data))
+    } catch (error) {
+      setValidationErrors(error.response.data.validationErrors)
+    }
   };
 
   const pendingApiCall = useApiProgress("put", "/api/1.0/users/" + username);
@@ -64,6 +71,22 @@ useEffect(()=>{
       setNewImage(undefined)
     }
   }
+
+  useEffect(()=>{
+setValidationErrors(previousValidationErrors=>({
+  ...previousValidationErrors,
+  name:undefined
+}))
+  },[updatedName])
+
+  useEffect(()=>{
+    setValidationErrors(previousValidationErrors=>({
+      ...previousValidationErrors,
+      image:undefined
+    }))
+      },[newImage])
+      
+const {name:nameError,image:imageError}=validationErrors || {}
 
   return (
     <div className="card text-center">
@@ -99,13 +122,13 @@ useEffect(()=>{
               onChange={(e) => {
                 setUpdatedName(e.target.value);
               }}
+              error={nameError}
               defaultValue={name}
               label={t("Change Name")}
             ></Input>
 
-      <div className="input-group mb-3 mt-3">
-      <label className="input-group-text" htmlFor="inputGroupFile01">Upload A Picture</label>
-      <input onChange={onChangeFile} type="file" className="form-control" id="inputGroupFile01"/>
+      <div className="mb-3 mt-3 text-center">
+      <Input error={imageError} accept="image/*" onChange={onChangeFile} type="file" className="form-control" label={t("Change Image")} />
       </div>
 
             <div className="mt-3">

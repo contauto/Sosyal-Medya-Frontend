@@ -21,7 +21,9 @@ i18n.use(initReactI18next).init({
         Edit: 'Edit',
         'Change Name': 'Change Name',
         Save: 'Save',
-        Cancel: 'Cancel'
+        Cancel: 'Cancel',
+        "Change Image":"Change Image",
+        "My Profile":"My Profile"
       }
     },
     tr: {
@@ -42,7 +44,9 @@ i18n.use(initReactI18next).init({
         Edit: 'Düzenle',
         'Change Name': 'İsminizi Değiştirin',
         Save: 'Kaydet',
-        Cancel: 'İptal Et'
+        Cancel: 'İptal Et',
+        "Change Image":"Profil Resminizi Değiştirin",
+        "My Profile":"Hesabım"
       }
     }
   },
