@@ -37,3 +37,7 @@ export const updateUser=(username,body)=>{
 export const postSos=sos=>{
   return axios.post("/api/1.0/sosses",sos)
 }
+
+export const getSosses = (page=0) =>{
+  return axios.get("/api/1.0/sosses?page="+page)
+}

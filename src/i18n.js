@@ -23,7 +23,9 @@ i18n.use(initReactI18next).init({
         Save: 'Save',
         Cancel: 'Cancel',
         "Change Image":"Change Image",
-        "My Profile":"My Profile"
+        "My Profile":"My Profile",
+        'There are no sosses': 'There are no sosses',
+        "Load old sosses":"Load old sosses"
       }
     },
     tr: {
@@ -46,7 +48,9 @@ i18n.use(initReactI18next).init({
         Save: 'Kaydet',
         Cancel: 'İptal Et',
         "Change Image":"Profil Resminizi Değiştirin",
-        "My Profile":"Hesabım"
+        "My Profile":"Hesabım",
+        'There are no sosses': 'Sos bulunamadı',
+        "Load old sosses":"Eski sosları getir"
       }
     }
   },

@@ -2,6 +2,7 @@ import React from "react";
 import UserList from "../components/UserList";
 import SosPost from "../components/SosPost";
 import { useSelector } from "react-redux";
+import SosFeed from "../components/SosFeed";
 
 
 export default function HomePage() {
@@ -18,6 +19,9 @@ export default function HomePage() {
         </div>
         <div className="col-12 col-md-4 mt-1">
           <UserList />
+        </div>
+        <div className="mt-2">
+          <SosFeed/>
         </div>
       </div>
     </div>
