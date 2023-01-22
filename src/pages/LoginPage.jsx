@@ -34,7 +34,7 @@ const LoginPage = (props) => {
   };
 
   const { t } = useTranslation();
-  const pendingApiCall = useApiProgress("post","/api/1.0/auth");
+  const pendingApiCall = useApiProgress("post", "/api/1.0/auth");
   const buttonDisabled = !(username && password);
 
   return (

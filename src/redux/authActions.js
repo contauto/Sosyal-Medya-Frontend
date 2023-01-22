@@ -18,23 +18,21 @@ export const loginHandler = (creds) => {
       password: creds.password,
     };
     dispatch(loginSuccess(authState));
-    return response
+    return response;
   };
 };
 
+export const signUpHandler = (user) => {
+  return async function (dispatch) {
+    const response = await signUp(user);
+    await dispatch(loginHandler(user));
+    return response;
+  };
+};
 
-export const signUpHandler=(user)=>{
-return async function(dispatch){
-  const response=await signUp(user)
-  await dispatch(loginHandler(user))
-  return response
-}
-}
-
-export const updateSuccess=({name,image})=>{
+export const updateSuccess = ({ name, image }) => {
   return {
-    type:ACTIONS.UPDATE_SUCCESS,
-    payload:{name,
-    image}
-  }
-}
+    type: ACTIONS.UPDATE_SUCCESS,
+    payload: { name, image },
+  };
+};

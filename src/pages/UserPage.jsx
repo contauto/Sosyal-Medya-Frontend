@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import Spinner from "../components/Spinner"
+import Spinner from "../components/Spinner";
 import ProfileCard from "../components/ProfileCard";
 import { useParams } from "react-router-dom";
 import { getUser } from "../api/ApiCalls";
 import { useTranslation } from "react-i18next";
 import { useApiProgress } from "../shared/ApiProgress";
+import SosFeed from "../components/SosFeed";
 
 const UserPage = (props) => {
-
   const [user, setUser] = useState({});
-  const {username} = useParams();
-  const [error,setError]=useState(false)
-  const pendingApiCall=useApiProgress("get","/api/1.0/users/"+username)
-  
+  const { username } = useParams();
+  const [error, setError] = useState(false);
+  const pendingApiCall = useApiProgress(
+    "get",
+    "/api/1.0/users/" + username,
+    true
+  );
+
+  const { t } = useTranslation();
+
   useEffect(() => {
-    setError(false)
-  }, [user])
-  
+    setError(false);
+  }, [user]);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -24,38 +29,41 @@ const UserPage = (props) => {
         const response = await getUser(username);
         setUser(response.data);
       } catch (error) {
-        setError(true)
+        setError(true);
       }
     };
-    loadUser()
+    loadUser();
   }, [username]);
 
-const {t}=useTranslation()
-
-if(pendingApiCall){
-  return <Spinner/>
-}
-
-if(error){
-return(
-  <div className="container text-center">
-    <div className="alert alert-danger">
-      <div>
-         
-    <i className="material-icons" style={{ fontSize: '48px' }}>
+  if (error) {
+    return (
+      <div className="container text-center">
+        <div className="alert alert-danger">
+          <div>
+            <i className="material-icons" style={{ fontSize: "48px" }}>
               error
             </i>
+          </div>
+          {t("User Not Found")}
+        </div>
       </div>
-  {t("User Not Found")}
-</div>
-  </div>
-)
-}
+    );
+  }
 
+  if (pendingApiCall || user.username !== username) {
+    return <Spinner />;
+  }
 
   return (
     <div className="container">
-      <ProfileCard user={user} />
+      <div className="row">
+        <div className="col-sm-12 col-md-6">
+          <ProfileCard user={user} />
+        </div>
+        <div className="col-sm-12 col-md-6">
+          <SosFeed />
+        </div>
+      </div>
     </div>
   );
 };

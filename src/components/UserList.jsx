@@ -13,7 +13,7 @@ const UserList = () => {
   });
 
   const [loadFailure, setLoadFailure] = useState(false);
-  const pendingApiCall = useApiProgress("get","/api/1.0/users?page");
+  const pendingApiCall = useApiProgress("get", "/api/1.0/users?page");
 
   useEffect(() => {
     loadUsers();
@@ -60,10 +60,9 @@ const UserList = () => {
     </div>
   );
 
-if(pendingApiCall){
-  
-  actionDiv=<Spinner/>
-}
+  if (pendingApiCall) {
+    actionDiv = <Spinner />;
+  }
 
   return (
     <div className="card">
@@ -76,7 +75,9 @@ if(pendingApiCall){
         ))}
       </div>
       {actionDiv}
-      {loadFailure&&<div className="text-center text-danger">{t("Load Failed")}</div>}
+      {loadFailure && (
+        <div className="text-center text-danger">{t("Load Failed")}</div>
+      )}
     </div>
   );
 };

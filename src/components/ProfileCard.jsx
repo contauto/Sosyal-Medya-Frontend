@@ -19,74 +19,73 @@ const ProfileCard = (props) => {
   const { username: loggedInUsername } = useSelector((store) => ({
     username: store.username,
   }));
-  const [editable,setEditable] = useState(false)
-  const [newImage,setNewImage]=useState()
-  const [validationErrors,setValidationErrors]=useState({})
-  const dispatch=useDispatch()
-  
+  const [editable, setEditable] = useState(false);
+  const [newImage, setNewImage] = useState();
+  const [validationErrors, setValidationErrors] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setUser(props.user);
   }, [props.user]);
 
-useEffect(()=>{
-  setEditable(pathUsername===loggedInUsername)
-},[pathUsername,loggedInUsername])
+  useEffect(() => {
+    setEditable(pathUsername === loggedInUsername);
+  }, [pathUsername, loggedInUsername]);
 
   const onClickSave = async () => {
     let image;
-    let propsName=name
-    if(updatedName){
-      propsName=updatedName
+    let propsName = name;
+    if (updatedName) {
+      propsName = updatedName;
     }
-    if(newImage){
-      image=newImage.split(",")[1]
+    if (newImage) {
+      image = newImage.split(",")[1];
     }
 
     const body = {
       name: propsName,
-      image
+      image,
     };
     try {
       const response = await updateUser(username, body);
       setEditMode(false);
       setUser(response.data);
-      dispatch(updateSuccess(response.data))
+      dispatch(updateSuccess(response.data));
     } catch (error) {
-      setValidationErrors(error.response.data.validationErrors)
+      setValidationErrors(error.response.data.validationErrors);
     }
   };
 
   const pendingApiCall = useApiProgress("put", "/api/1.0/users/" + username);
 
-  const onChangeFile=(event)=>{
-    if(event.target.files[0])
-    {const file=event.target.files[0]
-    const fileReader=new FileReader()
-    fileReader.onloadend=()=>{
-      setNewImage(fileReader.result)
+  const onChangeFile = (event) => {
+    if (event.target.files[0]) {
+      const file = event.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        setNewImage(fileReader.result);
+      };
+      fileReader.readAsDataURL(file);
+    } else {
+      setNewImage(undefined);
     }
-    fileReader.readAsDataURL(file)}
-    else{
-      setNewImage(undefined)
-    }
-  }
+  };
 
-  useEffect(()=>{
-setValidationErrors(previousValidationErrors=>({
-  ...previousValidationErrors,
-  name:undefined
-}))
-  },[updatedName])
-
-  useEffect(()=>{
-    setValidationErrors(previousValidationErrors=>({
+  useEffect(() => {
+    setValidationErrors((previousValidationErrors) => ({
       ...previousValidationErrors,
-      image:undefined
-    }))
-      },[newImage])
-      
-const {name:nameError,image:imageError}=validationErrors || {}
+      name: undefined,
+    }));
+  }, [updatedName]);
+
+  useEffect(() => {
+    setValidationErrors((previousValidationErrors) => ({
+      ...previousValidationErrors,
+      image: undefined,
+    }));
+  }, [newImage]);
+
+  const { name: nameError, image: imageError } = validationErrors || {};
 
   return (
     <div className="card text-center">
@@ -107,12 +106,17 @@ const {name:nameError,image:imageError}=validationErrors || {}
               {name}@{username}
             </h3>
 
-            {editable&&<><button
-              onClick={() => setEditMode(true)}
-              className="btn btn-warning d-inline-flex"
-            >
-              <i className="material-icons">edit</i>Edit
-            </button></>}
+            {editable && (
+              <>
+                <button
+                  onClick={() => setEditMode(true)}
+                  className="btn btn-warning d-inline-flex"
+                >
+                  <i className="material-icons">edit</i>
+                  {t("Edit")}
+                </button>
+              </>
+            )}
           </div>
         )}
 
@@ -127,9 +131,16 @@ const {name:nameError,image:imageError}=validationErrors || {}
               label={t("Change Name")}
             ></Input>
 
-      <div className="mb-3 mt-3 text-center">
-      <Input error={imageError} accept="image/*" onChange={onChangeFile} type="file" className="form-control" label={t("Change Image")} />
-      </div>
+            <div className="mb-3 mt-3 text-center">
+              <Input
+                error={imageError}
+                accept="image/*"
+                onChange={onChangeFile}
+                type="file"
+                className="form-control"
+                label={t("Change Image")}
+              />
+            </div>
 
             <div className="mt-3">
               <ButtonWithProgress

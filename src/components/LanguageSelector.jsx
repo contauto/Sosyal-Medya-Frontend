@@ -3,11 +3,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 function LanguageSelector(props) {
-  const {i18n}=useTranslation()
-   const onChangeLanguage=language=>{
-        i18n.changeLanguage(language)
-        changeLanguage(language)
-      }
+  const { i18n } = useTranslation();
+  const onChangeLanguage = (language) => {
+    i18n.changeLanguage(language);
+    changeLanguage(language);
+  };
   return (
     <div className="container">
       <img
@@ -25,4 +25,4 @@ function LanguageSelector(props) {
     </div>
   );
 }
-export default LanguageSelector
+export default LanguageSelector;

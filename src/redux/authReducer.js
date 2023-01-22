@@ -1,6 +1,4 @@
-import * as ACTIONS from "./Constants"
-
-
+import * as ACTIONS from "./Constants";
 
 const defaultState = {
   isLoggedIn: false,
@@ -16,19 +14,15 @@ const authReducer = (state = { ...defaultState }, action) => {
   } else if (action.type === ACTIONS.LOGIN_SUCCESS) {
     return {
       ...action.payload,
-      isLoggedIn:true
+      isLoggedIn: true,
     };
-  }
-  else if(action.type===ACTIONS.UPDATE_SUCCESS){
-    return{
+  } else if (action.type === ACTIONS.UPDATE_SUCCESS) {
+    return {
       ...state,
-      ...action.payload
-    }
+      ...action.payload,
+    };
   }
   return state;
 };
-
-
-
 
 export default authReducer;

@@ -2,7 +2,7 @@ import "../css/UserSignUpPage.css";
 import Input from "../components/Input";
 import { useTranslation } from "react-i18next";
 import ButtonWithProgress from "../components/ButtonWithProgress";
-import { useApiProgress} from "../shared/ApiProgress";
+import { useApiProgress } from "../shared/ApiProgress";
 import { useDispatch } from "react-redux";
 import { signUpHandler } from "../redux/authActions";
 import { useState } from "react";
@@ -17,7 +17,7 @@ const UserSignUpPage = (props) => {
   });
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const onChange = (event) => {
     const { name, value } = event.target;
     setErrors((previousErrors) => ({ ...previousErrors, [name]: undefined }));
@@ -48,9 +48,9 @@ const UserSignUpPage = (props) => {
     name: nameError,
     password: passwordError,
   } = errors;
-  const pendingApiCallForSignUp=useApiProgress("post","/api/1.0/users")
-  const pendingApiCallForLogin=useApiProgress("post","/api/1.0/auth")
-  const pendingApiCall=pendingApiCallForLogin||pendingApiCallForSignUp
+  const pendingApiCallForSignUp = useApiProgress("post", "/api/1.0/users");
+  const pendingApiCallForLogin = useApiProgress("post", "/api/1.0/auth");
+  const pendingApiCall = pendingApiCallForLogin || pendingApiCallForSignUp;
   const { t } = useTranslation();
 
   let rePasswordError;
@@ -99,6 +99,5 @@ const UserSignUpPage = (props) => {
     </div>
   );
 };
-
 
 export default UserSignUpPage;

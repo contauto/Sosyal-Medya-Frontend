@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getSosses } from "../api/ApiCalls";
+import { getOldSosses, getSosses } from "../api/ApiCalls";
 import SosView from "./SosView";
 import { useApiProgress } from "../shared/ApiProgress";
 import Spinner from "./Spinner";
+import { useParams } from "react-router-dom";
 
 export default function SosFeed() {
   const [sosPage, setSosPage] = useState({
@@ -12,31 +13,65 @@ export default function SosFeed() {
     number: 0,
   });
   const { t } = useTranslation();
-  const pendingApiCall = useApiProgress("get", "/api/1.0/sosses");
+  const { username } = useParams();
+  const path = username
+    ? "/api/1.0/users/" + username + "/sosses?page="
+    : "/api/1.0/sosses?page=";
+  const initialSosLoadProgress = useApiProgress("get", path);
 
-  const loadSosses = async (page) => {
-    try {
-      const response = await getSosses(page);
-      setSosPage((previousSosPage) => ({
-        ...response.data,
-        content: [...previousSosPage.content, ...response.data.content],
-      }));
-    } catch (error) {}
-  };
+  let lastSosId = 0;
+  if (sosPage.content.length > 0) {
+    const lastSosIndex = sosPage.content.length - 1;
+    lastSosId = sosPage.content[lastSosIndex].id;
+  }
 
-  const { content, last, number } = sosPage;
+  const oldSosPath=username?
+  "/api/1.0/users/"+username+"/sosses/"+lastSosId:
+  "/api/1.0/sosses/"+lastSosId
+
+
+  const loadOldSossesProgress = useApiProgress(
+    "get",
+    oldSosPath,
+    true
+  );
 
   let divClassName = "alert text-center alert-";
-  pendingApiCall ? (divClassName += "secondary") : (divClassName += "danger");
+  initialSosLoadProgress
+    ? (divClassName += "secondary")
+    : (divClassName += "danger");
 
   useEffect(() => {
+    const loadSosses = async (page) => {
+      try {
+        const response = await getSosses(username, page);
+        setSosPage((previousSosPage) => ({
+          ...response.data,
+          content: [...previousSosPage.content, ...response.data.content],
+        }));
+      } catch (error) {}
+    };
     loadSosses();
-  }, []);
+  }, [username]);
+
+  const loadOldSosses = async () => {
+    const response = await getOldSosses(lastSosId,username);
+    setSosPage((previousSosPage) => ({
+      ...response.data,
+      content: [...previousSosPage.content, ...response.data.content],
+    }));
+  };
+
+  const { content, last } = sosPage;
+
+
+  
+
 
   if (content.length === 0) {
     return (
       <div className={divClassName}>
-        {pendingApiCall ? <Spinner /> : t("There are no sosses")}
+        {initialSosLoadProgress ? <Spinner /> : t("There are no sosses")}
       </div>
     );
   }
@@ -48,13 +83,11 @@ export default function SosFeed() {
       })}
       {!last && (
         <div
-          style={{ cursor: !pendingApiCall? "pointer":"not-allowed" }}
-          onClick={
-            pendingApiCall ? () => {} : () => loadSosses(number + 1)
-          }
+          style={{ cursor: !loadOldSossesProgress ? "pointer" : "not-allowed" }}
+          onClick={loadOldSossesProgress ? () => {} : () => loadOldSosses()}
           className="alert alert-success text-center"
         >
-          {pendingApiCall?<Spinner/>:t("Load old sosses")}
+          {loadOldSossesProgress ? <Spinner /> : t("Load old sosses")}
         </div>
       )}
     </div>
