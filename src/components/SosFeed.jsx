@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getOldSosses, getSosses } from "../api/ApiCalls";
+import { getNewSosCount, getOldSosses, getSosses } from "../api/ApiCalls";
 import SosView from "./SosView";
 import { useApiProgress } from "../shared/ApiProgress";
 import Spinner from "./Spinner";
@@ -14,13 +14,18 @@ export default function SosFeed() {
   });
   const { t } = useTranslation();
   const { username } = useParams();
+  const [newSosCount,setNewSosCount]=useState(0)
+
   const path = username
     ? "/api/1.0/users/" + username + "/sosses?page="
     : "/api/1.0/sosses?page=";
   const initialSosLoadProgress = useApiProgress("get", path);
 
   let lastSosId = 0;
+  let firstSosId=0
+
   if (sosPage.content.length > 0) {
+    firstSosId=sosPage.content[0].id
     const lastSosIndex = sosPage.content.length - 1;
     lastSosId = sosPage.content[lastSosIndex].id;
   }
@@ -41,6 +46,20 @@ export default function SosFeed() {
     ? (divClassName += "secondary")
     : (divClassName += "danger");
 
+
+  useEffect(()=>{
+    const getCount=async()=>{
+      const response=await getNewSosCount(firstSosId)
+      setNewSosCount(response.data.count)
+    }
+    let looper=setInterval(()=>{
+      getCount()
+    },10000)
+    return function cleanUp(){
+      clearInterval(looper)
+    }
+  },[firstSosId])
+
   useEffect(() => {
     const loadSosses = async (page) => {
       try {
@@ -53,6 +72,8 @@ export default function SosFeed() {
     };
     loadSosses();
   }, [username]);
+
+
 
   const loadOldSosses = async () => {
     const response = await getOldSosses(lastSosId,username);
@@ -78,6 +99,10 @@ export default function SosFeed() {
 
   return (
     <div>
+      
+    <div>
+      {newSosCount>0 && <div className="alert alert-success text-center mt-2">{t('There are new sosses')}</div>}
+      </div>
       {content.map((sos) => {
         return <SosView key={sos.id} sos={sos} />;
       })}

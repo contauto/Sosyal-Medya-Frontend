@@ -27,6 +27,8 @@ i18n.use(initReactI18next).init({
         "My Profile": "My Profile",
         "There are no sosses": "There are no sosses",
         "Load old sosses": "Load old sosses",
+        "There are new sosses": "There are new sosses",
+        "Load new sosses": "Load new sosses",
       },
     },
     tr: {
@@ -52,6 +54,8 @@ i18n.use(initReactI18next).init({
         "My Profile": "Hesabım",
         "There are no sosses": "Sos bulunamadı",
         "Load old sosses": "Eski sosları getir",
+        "There are new sosses": "Yeni soslar mevcut",
+        "Load new sosses": "Yeni sosları getir",
       },
     },
   },
