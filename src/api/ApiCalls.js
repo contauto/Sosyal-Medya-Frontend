@@ -51,6 +51,12 @@ export const getOldSosses = (id, username) => {
   return axios.get(path);
 };
 
-export const getNewSosCount=(id)=>{
-  return axios.get(`/api/1.0/sosses/${id}?count=true`)
+export const getNewSosCount=(id,username)=>{
+  const path=username?(`/api/1.0/users/${username}/sosses/${id}?count=true`):(`/api/1.0/sosses/${id}?count=true`)
+  return axios.get(path)
+}
+
+export const getNewSosses=(id,username)=>{
+  const path=username?(`/api/1.0/users/${username}/sosses/${id}?direction=after`):`/api/1.0/sosses/${id}?direction=after`
+  return axios.get(path)
 }
