@@ -29,6 +29,7 @@ i18n.use(initReactI18next).init({
         "Load old sosses": "Load old sosses",
         "There are new sosses": "There are new sosses",
         "Load new sosses": "Load new sosses",
+        "Loading":"Loading"
       },
     },
     tr: {
@@ -56,6 +57,7 @@ i18n.use(initReactI18next).init({
         "Load old sosses": "Eski sosları getir",
         "There are new sosses": "Yeni soslar mevcut",
         "Load new sosses": "Yeni sosları getir",
+        "Loading":"Yükleniyor"
       },
     },
   },

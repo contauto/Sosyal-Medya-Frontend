@@ -60,3 +60,7 @@ export const getNewSosses=(id,username)=>{
   const path=username?(`/api/1.0/users/${username}/sosses/${id}?direction=after`):`/api/1.0/sosses/${id}?direction=after`
   return axios.get(path)
 }
+
+export const postSosAttachment=attachment=>{
+  return axios.post("/api/1.0/sos-attachments",attachment)
+}
