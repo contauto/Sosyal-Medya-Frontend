@@ -9,7 +9,7 @@ function LanguageSelector(props) {
     changeLanguage(language);
   };
   return (
-    <div className="container">
+    <div className="container mb-5">
       <img
         alt="us"
         src="https://flagcdn.com/h20/us.png"

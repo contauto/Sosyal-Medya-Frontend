@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 
 export default function SosView(props) {
   const { sos } = props;
-  const { userDto, content, timestamp } = sos;
+  const { userDto, content, timestamp, fileAttachmentDto } = sos;
   const { name, username, image } = userDto;
-  const { i18n } = useTranslation();
+  const { t,i18n } = useTranslation();
   const formatted = format(timestamp, i18n.language);
 
   return (
@@ -31,6 +31,21 @@ export default function SosView(props) {
         </div>
       </div>
       <div className="ps-5">{content}</div>
+      {fileAttachmentDto && (
+        <div className="ps-5">
+          {fileAttachmentDto.fileType.startsWith("image") && (
+            <img
+              className="img-fluid"
+              width={210}
+              src={"images/attachments/" + fileAttachmentDto.name}
+              alt="content"
+            ></img>
+          )}
+          {!fileAttachmentDto.fileType.startsWith("image") && (
+            <a href={"images/attachments/" + fileAttachmentDto.name} download>{t("Click to Download")}</a>
+          )}
+        </div>
+      )}
     </div>
   );
 }

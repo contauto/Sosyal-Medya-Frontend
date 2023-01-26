@@ -18,6 +18,7 @@ export default function SosPost() {
   const { t } = useTranslation();
   const [errors, setErrors] = useState({});
   const [newImage, setNewImage] = useState();
+  const [attachmentId,setAttachmentId]=useState()
 
   const pendingApiCall = useApiProgress("post", "/api/1.0/sosses", true);
   const pendingImageCall = useApiProgress(
@@ -31,6 +32,7 @@ export default function SosPost() {
       setSos("");
       setErrors({});
       setNewImage();
+      setAttachmentId()
     }
   }, [focused]);
 
@@ -41,6 +43,7 @@ export default function SosPost() {
   const onClickSosio = async () => {
     const body = {
       content: sos,
+      attachmentId
     };
 
     try {
@@ -74,7 +77,8 @@ export default function SosPost() {
   const uploadFile = async (file) => {
     const attachment = new FormData();
     attachment.append("file", file);
-    await postSosAttachment(attachment);
+    const response=await postSosAttachment(attachment);
+    setAttachmentId(response.data.id)
   };
 
   return (
@@ -104,13 +108,12 @@ export default function SosPost() {
               <Input
                 type="file"
                 onChange={onChangeFile}
-                accept="image/*"
                 className="form-control"
               />
             )}
 
             {newImage && (
-              <AutoUploadImage uploading={pendingImageCall} image={newImage}/>
+              <AutoUploadImage width={300} uploading={pendingImageCall} image={newImage} />
             )}
 
             <div className="text-end mt-3">
