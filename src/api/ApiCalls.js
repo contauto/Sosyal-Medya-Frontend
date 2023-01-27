@@ -64,3 +64,11 @@ export const getNewSosses=(id,username)=>{
 export const postSosAttachment=attachment=>{
   return axios.post("/api/1.0/sos-attachments",attachment)
 }
+
+export const deleteSos=id=>{
+  return axios.delete("/api/1.0/sosses/"+id)
+}
+
+export const deleteUser=username=>{
+  return axios.delete("/api/1.0/users/"+username)
+}

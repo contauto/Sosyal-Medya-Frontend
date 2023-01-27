@@ -32,7 +32,11 @@ i18n.use(initReactI18next).init({
         "Loading":"Loading",
         "Unknown Attachment":"Unknown Attachment",
         "Click to Download":"Click to Download",
-        "Attachment":"Attachment"
+        "Attachment":"Attachment",
+        'Delete Sos': 'Delete Sos',
+        'Are you sure to delete Sos?': 'Are you sure to delete Sos?',
+        'Delete My Account': 'Delete My Account',
+        'Are you sure to delete your account?': 'Are you sure to delete your account?'
       },
     },
     tr: {
@@ -63,7 +67,11 @@ i18n.use(initReactI18next).init({
         "Loading":"Yükleniyor",
         "Unknown Attachment":"Bilinmeyen dosya eki",
         "Click to Download":"İndirmek için tıklayınız",
-        "Attachment":"Dosya"
+        "Attachment":"Dosya",
+        'Delete Sos': 'Sosu sil',
+        'Are you sure to delete Sos?': 'Sosu silmek istediğinizden emin misiniz?',
+        'Delete My Account': 'Hesabımı Sil',
+        'Are you sure to delete your account?': 'Hesabınızı silmek istediğinizden emin misiniz?'
       },
     },
   },

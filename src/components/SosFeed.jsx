@@ -52,6 +52,16 @@ export default function SosFeed() {
     ? (divClassName += "secondary")
     : (divClassName += "danger");
 
+
+  const onDeleteSosSuccess=(id)=>{
+
+    setSosPage(previousSosPage=>({
+      ...previousSosPage,
+      content:previousSosPage.content.filter(sos=>sos.id!==id)
+    }))
+
+  }
+
   useEffect(() => {
     const getCount = async () => {
       const response = await getNewSosCount(firstSosId, username);
@@ -120,7 +130,7 @@ export default function SosFeed() {
       </div>
 
       {content.map((sos) => {
-        return <SosView key={sos.id} sos={sos} />;
+        return <SosView key={sos.id} sos={sos} onDeleteSos={onDeleteSosSuccess} />;
       })}
       {!last && (
         <div

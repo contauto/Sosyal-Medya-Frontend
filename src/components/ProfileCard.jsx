@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import ProfileImageWithDefault from "../components/ProfileImageWithDefault";
 import { useTranslation } from "react-i18next";
 import Input from "../components/Input";
-import { updateUser } from "../api/ApiCalls";
+import { deleteUser, updateUser } from "../api/ApiCalls";
 import { useApiProgress } from "../shared/ApiProgress";
 import ButtonWithProgress from "./ButtonWithProgress";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSuccess } from "../redux/authActions";
+import { logoutSuccess, updateSuccess } from "../redux/authActions";
+import Modal from "./Modal";
 
 const ProfileCard = (props) => {
   const [editMode, setEditMode] = useState(false);
@@ -22,7 +23,9 @@ const ProfileCard = (props) => {
   const [editable, setEditable] = useState(false);
   const [newImage, setNewImage] = useState();
   const [validationErrors, setValidationErrors] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   useEffect(() => {
     setUser(props.user);
@@ -48,6 +51,7 @@ const ProfileCard = (props) => {
     };
     try {
       const response = await updateUser(username, body);
+      console.log(body)
       setEditMode(false);
       setUser(response.data);
       dispatch(updateSuccess(response.data));
@@ -56,7 +60,30 @@ const ProfileCard = (props) => {
     }
   };
 
-  const pendingApiCall = useApiProgress("put", "/api/1.0/users/" + username);
+  const pendingApiCall = useApiProgress(
+    "put",
+    "/api/1.0/users/" + username,
+    true
+  );
+  const pendingDeleteCall = useApiProgress(
+    "delete",
+    "/api/1.0/users/" + username,
+    true
+  );
+
+  const onClickCancel = () => {
+    setModalVisible(false);
+  };
+
+  const onClickDeleteUser = async () => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await deleteUser(username);
+      setModalVisible(false);
+      dispatch(logoutSuccess())
+      navigate("/")
+    } catch (error) {}
+  };
 
   const onChangeFile = (event) => {
     if (event.target.files[0]) {
@@ -115,6 +142,15 @@ const ProfileCard = (props) => {
                   <i className="material-icons">edit</i>
                   {t("Edit")}
                 </button>
+                <div>
+                  <button
+                    onClick={() => setModalVisible(true)}
+                    className="btn btn-danger d-inline-flex mt-2"
+                  >
+                    <i className="material-icons ">directions_run</i>
+                    {t("Delete My Account")}
+                  </button>
+                </div>
               </>
             )}
           </div>
@@ -171,6 +207,15 @@ const ProfileCard = (props) => {
           </div>
         )}
       </div>
+      <Modal
+        visible={modalVisible}
+        title={t("Delete My Account")}
+        okButton={t("Delete My Account")}
+        onClickCancel={onClickCancel}
+        onClickOk={onClickDeleteUser}
+        message={t("Are you sure to delete your account?")}
+        pendingApiCall={pendingDeleteCall}
+      />
     </div>
   );
 };
