@@ -51,7 +51,6 @@ const ProfileCard = (props) => {
     };
     try {
       const response = await updateUser(username, body);
-      console.log(body)
       setEditMode(false);
       setUser(response.data);
       dispatch(updateSuccess(response.data));
